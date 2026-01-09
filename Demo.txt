@@ -1,0 +1,160 @@
+# MongoDB Collections Schema and Data Types
+
+## 1. User Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id   | ObjectId | Primary key | Auto-generated |
+| name  | String | User's full name | Required |
+| email              | String | User's email address | Required, Unique |
+| password           | String  | Hashed password | Required |
+| isAdmin            | Boolean  | Admin privileges flag | Default: false |
+| address.street     | String | Street address | Optional |
+| address.city       | String | City | Optional |
+| address.state      | String | State | Optional |
+| address.country    | String | Country | Optional |
+| address.postalCode | String | Postal/ZIP code | Optional |
+| createdAt          | Date | Creation timestamp | Auto-generated |
+| updatedAt          | Date | Last update timestamp | Auto-generated |
+
+**Indexes:** Unique index on email
+**Middleware:** Password hashing before save, password comparison method
+
+---
+
+## 2. Category Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id | ObjectId | Primary key | Auto-generated |
+| name | String | Category name | Required, Unique |
+
+**Indexes:** Unique index on name
+
+---
+
+## 3. Product Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id | ObjectId | Primary key | Auto-generated |
+| name | String | Product name | Required |
+| description | String | Product description | Required |
+| price | Number | Product price | Required |
+| discountPrice | Number | Discounted price | Optional |
+| images | Array of Strings | Product image URLs | Optional |
+| category | ObjectId | Reference to Category | Required |
+| brand | String | Product brand | Default: 'Generic' |
+| material | String | Material type (Gold, Silver, etc.) | Optional |
+| weight | Number | Weight in grams | Optional |
+| purity | String | Purity level (18K, 22K, etc.) | Optional |
+| stock | Number | Available quantity | Required, Default: 0 |
+| isActive | Boolean | Product active status | Default: true |
+| isFeatured | Boolean | Featured product flag | Default: false |
+| tags | Array of Strings | Search tags | Optional |
+| rating | Number | Average rating | Default: 0 |
+| numReviews | Number | Total number of reviews | Default: 0 |
+| reviews.user | ObjectId | Reference to User | Required |
+| reviews.name | String | Reviewer name | Required |
+| reviews.rating | Number | Review rating | Required |
+| reviews.comment | String | Review comment | Required |
+| reviews.createdAt | Date | Review creation date | Default: current date |
+| createdAt | Date | Creation timestamp | Auto-generated |
+| updatedAt | Date | Last update timestamp | Auto-generated |
+
+**Indexes:** 
+- Text index on name, description, tags
+- Index on category
+- Index on price  
+- Index on isFeatured
+
+---
+
+## 4. Cart Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id | ObjectId | Primary key | Auto-generated |
+| user | ObjectId | Reference to User | Required |
+| items.product | ObjectId | Reference to Product | Required |
+| items.quantity | Number | Quantity of product | Required, Default: 1 |
+| createdAt | Date | Creation timestamp | Auto-generated |
+| updatedAt | Date | Last update timestamp | Auto-generated |
+
+**References:** User, Product collections
+
+---
+
+## 5. Order Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id | ObjectId | Primary key | Auto-generated |
+| user | ObjectId | Reference to User | Required |
+| orderItems.product | ObjectId | Reference to Product | Required |
+| orderItems.name | String | Product name | Required |
+| orderItems.quantity | Number | Ordered quantity | Required |
+| orderItems.price | Number | Product price | Required |
+| orderItems.image | String | Product image URL | Required |
+| shippingAddress.street | String | Shipping street | Required |
+| shippingAddress.city | String | Shipping city | Required |
+| shippingAddress.postalCode | String | Shipping postal code | Required |
+| shippingAddress.country | String | Shipping country | Required |
+| paymentMethod | String | Payment method | Required |
+| paymentStatus | String | Payment status | Enum: pending/paid/failed, Default: pending |
+| status | String | Order status | Enum: Pending/Processing/Shipped/Delivered/Cancelled, Default: Pending |
+| totalPrice | Number | Total order amount | Required |
+| createdAt | Date | Creation timestamp | Auto-generated |
+| updatedAt | Date | Last update timestamp | Auto-generated |
+
+**References:** User, Product collections
+
+---
+
+## 6. Payment Collection
+
+| Field | Data Type | Description | Constraints |
+|-------|-----------|-------------|-------------|
+| _id | ObjectId | Primary key | Auto-generated |
+| order | ObjectId | Reference to Order | Required |
+| method | String | Payment method | Enum: card/upi/cod, Required |
+| status | String | Payment status | Enum: pending/success/failed, Default: pending |
+| transactionId | String | Transaction identifier | Optional |
+| paidAt | Date | Payment completion date | Optional |
+| createdAt | Date | Creation timestamp | Auto-generated |
+| updatedAt | Date | Last update timestamp | Auto-generated |
+
+**References:** Order collection
+
+---
+
+## Database Relationships
+
+### One-to-Many Relationships:
+- **User → Cart**: One user can have one cart
+- **User → Orders**: One user can have multiple orders
+- **Category → Products**: One category can have multiple products
+- **Order → Payment**: One order can have one payment record
+
+### Many-to-Many Relationships:
+- **Products ↔ Cart**: Products can be in multiple carts, carts can have multiple products
+- **Products ↔ Orders**: Products can be in multiple orders, orders can have multiple products
+
+### Embedded Documents:
+- **User.address**: Embedded address object
+- **Product.reviews**: Array of embedded review objects
+- **Order.orderItems**: Array of embedded order item objects
+- **Order.shippingAddress**: Embedded shipping address object
+- **Cart.items**: Array of embedded cart item objects
+
+## Data Type Summary by MongoDB Types:
+
+| MongoDB Type | Usage Count | Fields |
+|--------------|-------------|---------|
+| ObjectId | 15 | Primary keys and references |
+| String | 25 | Names, descriptions, addresses, enums |
+| Number | 10 | Prices, quantities, ratings, weights |
+| Boolean | 3 | Flags (isAdmin, isActive, isFeatured) |
+| Date | 8 | Timestamps and payment dates |
+| Array | 4 | Images, tags, reviews, cart/order items |
+| Mixed/Object | 4 | Address objects, review objects |

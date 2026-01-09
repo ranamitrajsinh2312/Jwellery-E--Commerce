@@ -1,0 +1,265 @@
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+}
+
+.checkout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+
+.checkout-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.checkout-error {
+  text-align: center;
+  padding: var(--space-16);
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-200);
+}
+
+.checkout-error h2 {
+  margin-bottom: var(--space-4);
+  color: var(--text-primary);
+}
+
+.checkout-error p {
+  margin-bottom: var(--space-6);
+  color: var(--text-secondary);
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.checkout-form-section {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-200);
+  padding: var(--space-8);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+/* Inputs & Selects */
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Placeholder text */
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Focus state */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(55, 54, 161, 0.15); /* using your theme #3736a1 */
+  outline: none;
+}
+
+/* Disabled state */
+.form-field input:disabled,
+.form-field select:disabled,
+.form-field textarea:disabled {
+  background: var(--gray-100);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+.checkout-submit-btn {
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-8);
+}
+
+.checkout-summary {
+  position: sticky;
+  top: var(--space-8);
+}
+
+.order-summary {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-200);
+  padding: var(--space-8);
+}
+
+.order-summary h3 {
+  margin: 0 0 var(--space-6) 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.summary-items {
+  margin-bottom: var(--space-6);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.item-image-small {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-image-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-small {
+  font-size: 1.5rem;
+  color: var(--gray-300);
+}
+
+.item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-details h4 {
+  margin: 0 0 var(--space-1) 0;
+  font-size: 0.975rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-quantity {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.item-total {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.975rem;
+}
+
+.summary-totals {
+  border-top: 2px solid var(--gray-200);
+  padding-top: var(--space-5);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  color: var(--text-secondary);
+  font-size: 0.975rem;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--gray-200);
+  font-weight: 700;
+  font-size: 1.375rem;
+  color: var(--text-primary);
+}
+
+@media (max-width: 1024px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  
+  .checkout-summary {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: var(--space-4) var(--space-2);
+  }
+  
+  .checkout-header {
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .checkout-header h1 {
+    font-size: 1.875rem;
+  }
+  
+  .checkout-form-section,
+  .order-summary {
+    padding: var(--space-5);
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  
+  .item-image-small {
+    width: 50px;
+    height: 50px;
+  }
+}

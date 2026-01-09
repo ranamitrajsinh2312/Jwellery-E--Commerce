@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Token Test</title>
+</head>
+<body>
+    <h1>Token Test</h1>
+    <div id="token-display"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            document.getElementById('token-display').innerText = token ? 
+                `Token found: ${token.substring(0, 20)}...` : 
+                'No token found in localStorage';
+            
+            console.log('Full token:', token);
+        });
+    </script>
+</body>
+</html>
