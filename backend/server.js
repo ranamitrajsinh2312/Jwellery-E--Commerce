@@ -12,12 +12,29 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 const errorHandler = require('./middleware/errorMiddleware');
 const rateLimit = require('express-rate-limit');
-const { Connect } = require('vite');
+
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+// Database connection middleware for serverless
+let isConnected = false;
+app.use(async (req, res, next) => {
+  if (!isConnected) {
+    try {
+      await connectDB();
+      isConnected = true;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    next();
+  }
+});
+
 
 // CORS
 app.use((req, res, next) => {
