@@ -65,7 +65,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/payments', paymentRoutes);
 
-app.get('/', (req, res) => res.send('API is running...'));
+
 
 // Error Handler
 app.use(errorHandler);
