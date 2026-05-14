@@ -74,11 +74,12 @@ const fs = require('fs');
 let distPath = path.join(process.cwd(), 'dist');
 
 const possiblePaths = [
-  path.join(process.cwd(), 'api/dist'),
+  path.join(__dirname, 'dist'),
+  path.join(process.cwd(), 'backend/dist'),
   path.join(process.cwd(), 'dist'),
-  path.join(__dirname, '../api/dist'),
-  path.join(__dirname, '../dist')
+  path.join(__dirname, '../api/dist')
 ];
+
 
 for (const p of possiblePaths) {
   if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
