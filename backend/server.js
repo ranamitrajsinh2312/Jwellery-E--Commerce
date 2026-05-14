@@ -67,8 +67,28 @@ app.use('/api/payments', paymentRoutes);
 
 
 
+const path = require('path');
+
+// Serve static assets
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+// Catch-all to serve frontend
+app.get('*', (req, res, next) => {
+  // If it's an API route that wasn't matched, let it go to error handler
+  if (req.url.startsWith('/api')) {
+    return next();
+  }
+  res.sendFile(path.join(distPath, 'index.html'), (err) => {
+    if (err) {
+      res.status(404).send("UI not built yet. Please run build.");
+    }
+  });
+});
+
 // Error Handler
 app.use(errorHandler);
+
 
 const PORT = process.env.PORT || 5001;
 
