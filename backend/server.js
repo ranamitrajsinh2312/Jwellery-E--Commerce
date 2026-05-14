@@ -71,7 +71,20 @@ const path = require('path');
 
 app.get('/api', (req, res) => res.json({ status: 'API is running', timestamp: new Date() }));
 
+// Serve static assets fallback
+const distPath = path.join(process.cwd(), 'dist');
+if (require('fs').existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.url.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'), (err) => {
+      if (err) next();
+    });
+  });
+}
+
 // Error Handler
+
 app.use(errorHandler);
 
 
