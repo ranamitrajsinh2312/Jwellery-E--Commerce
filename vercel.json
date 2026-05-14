@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "framework": "vite",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
@@ -8,7 +9,7 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/:path((?!api/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
