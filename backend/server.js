@@ -70,8 +70,25 @@ app.use('/api/payments', paymentRoutes);
 const path = require('path');
 
 // Serve static assets
-const distPath = path.join(process.cwd(), 'dist');
+const fs = require('fs');
+let distPath = path.join(process.cwd(), 'dist');
+
+const possiblePaths = [
+  path.join(process.cwd(), 'api/dist'),
+  path.join(process.cwd(), 'dist'),
+  path.join(__dirname, '../api/dist'),
+  path.join(__dirname, '../dist')
+];
+
+for (const p of possiblePaths) {
+  if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
+    distPath = p;
+    break;
+  }
+}
+
 app.use(express.static(distPath));
+
 
 
 // Catch-all to serve frontend
