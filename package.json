@@ -5,8 +5,9 @@
 
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp -r dist backend/",
-    "vercel-build": "vite build && cp -r dist backend/",
+    "build": "vite build",
+    "vercel-build": "vite build",
+
 
 
     "lint": "eslint .",

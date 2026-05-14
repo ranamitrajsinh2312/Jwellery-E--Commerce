@@ -69,56 +69,11 @@ app.use('/api/payments', paymentRoutes);
 
 const path = require('path');
 
-// Serve static assets
-const fs = require('fs');
-let distPath = path.join(process.cwd(), 'dist');
-
-const possiblePaths = [
-  path.join(__dirname, 'dist'),
-  path.join(process.cwd(), 'backend/dist'),
-  path.join(process.cwd(), 'dist'),
-  path.join(__dirname, '../api/dist')
-];
-
-
-for (const p of possiblePaths) {
-  if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
-    distPath = p;
-    break;
-  }
-}
-
-app.use(express.static(distPath));
-
-
-
-// Catch-all to serve frontend
-app.get('*', (req, res, next) => {
-  // If it's an API route that wasn't matched, let it go to error handler
-  if (req.url.startsWith('/api')) {
-    return next();
-  }
-  res.sendFile(path.join(distPath, 'index.html'), (err) => {
-    if (err) {
-      res.status(404).send(`UI not built yet at ${distPath}. Files here: ${require('fs').readdirSync(process.cwd()).join(', ')}`);
-    }
-  });
-});
-
-app.get('/api/debug-files', (req, res) => {
-  const fs = require('fs');
-  const files = {
-    root: fs.readdirSync(process.cwd()),
-    dirname: fs.readdirSync(__dirname),
-    distExists: fs.existsSync(path.join(process.cwd(), 'dist')),
-    distContent: fs.existsSync(path.join(process.cwd(), 'dist')) ? fs.readdirSync(path.join(process.cwd(), 'dist')) : 'none'
-  };
-  res.json(files);
-});
-
+app.get('/api', (req, res) => res.json({ status: 'API is running', timestamp: new Date() }));
 
 // Error Handler
 app.use(errorHandler);
+
 
 
 const PORT = process.env.PORT || 5001;
