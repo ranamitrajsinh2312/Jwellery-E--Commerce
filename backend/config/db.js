@@ -25,9 +25,10 @@ const connectDB = async () => {
     console.log("✅ MongoDB Connected Successfully");
   } catch (error) {
     console.error("❌ MongoDB Connection Failed:", error.message);
-    throw error;
+    throw new Error(`Database connection failed: ${error.message}. Please check your MONGO_URI in Vercel environment variables.`);
   }
 };
+
 
 
 module.exports = connectDB;

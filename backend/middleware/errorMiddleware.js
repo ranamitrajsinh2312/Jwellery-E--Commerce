@@ -17,8 +17,9 @@ const errorHandler = (err, req, res, next) => {
     // Default to 500 for unhandled errors
     res.status(500).json({
       message: 'Server error',
-      error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+      error: err.message, // Include message for easier debugging
     });
   };
+
   
   module.exports = errorHandler;

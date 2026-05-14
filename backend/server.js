@@ -36,12 +36,9 @@ app.use(async (req, res, next) => {
 });
 
 
-// CORS
+// CORS - Allow all for production debugging
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && origin.startsWith('http://localhost:')) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token');
   res.header('Access-Control-Allow-Credentials', 'true');
   if (req.method === 'OPTIONS') {
@@ -50,6 +47,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 
 // Rate Limit - More lenient for development
 app.use(rateLimit({ 
