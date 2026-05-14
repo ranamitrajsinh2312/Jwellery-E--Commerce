@@ -70,8 +70,9 @@ app.use('/api/payments', paymentRoutes);
 const path = require('path');
 
 // Serve static assets
-const distPath = path.join(__dirname, '../dist');
+const distPath = path.join(process.cwd(), 'dist');
 app.use(express.static(distPath));
+
 
 // Catch-all to serve frontend
 app.get('*', (req, res, next) => {
@@ -81,10 +82,22 @@ app.get('*', (req, res, next) => {
   }
   res.sendFile(path.join(distPath, 'index.html'), (err) => {
     if (err) {
-      res.status(404).send("UI not built yet. Please run build.");
+      res.status(404).send(`UI not built yet at ${distPath}. Files here: ${require('fs').readdirSync(process.cwd()).join(', ')}`);
     }
   });
 });
+
+app.get('/api/debug-files', (req, res) => {
+  const fs = require('fs');
+  const files = {
+    root: fs.readdirSync(process.cwd()),
+    dirname: fs.readdirSync(__dirname),
+    distExists: fs.existsSync(path.join(process.cwd(), 'dist')),
+    distContent: fs.existsSync(path.join(process.cwd(), 'dist')) ? fs.readdirSync(path.join(process.cwd(), 'dist')) : 'none'
+  };
+  res.json(files);
+});
+
 
 // Error Handler
 app.use(errorHandler);
