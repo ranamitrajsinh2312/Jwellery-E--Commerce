@@ -26,7 +26,7 @@ const AddProduct = ({ user }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/categories')
+      const response = await axios.get('/api/categories')
       setCategories(response.data)
     } catch (error) {
       console.error('Error fetching categories:', error)
@@ -129,7 +129,7 @@ const AddProduct = ({ user }) => {
       console.log('Images being sent:', productData.images)
       console.log('Images array length:', productData.images.length)
 
-      const response = await axios.post('http://localhost:5001/api/products', productData, {
+      const response = await axios.post('/api/products', productData, {
         headers: { Authorization: `Bearer ${token}` }
       })
       

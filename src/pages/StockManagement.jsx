@@ -18,12 +18,12 @@ const StockManagement = ({ user }) => {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem('token')
-      let url = 'http://localhost:5001/api/products'
+      let url = '/api/products'
       
       if (filter === 'low-stock') {
-        url = 'http://localhost:5001/api/products/admin/low-stock?threshold=10'
+        url = '/api/products/admin/low-stock?threshold=10'
       } else if (filter === 'out-of-stock') {
-        url = 'http://localhost:5001/api/products'
+        url = '/api/products'
       }
       
       const response = await axios.get(url, {
@@ -48,7 +48,7 @@ const StockManagement = ({ user }) => {
     setUpdating(prev => ({ ...prev, [productId]: true }))
     try {
       const token = localStorage.getItem('token')
-      await axios.put(`http://localhost:5001/api/products/${productId}/stock`, 
+      await axios.put(`/api/products/${productId}/stock`, 
         { stock: newStock },
         { headers: { Authorization: `Bearer ${token}` } }
       )

@@ -58,11 +58,11 @@ const AdminDashboard = ({ user }) => {
         productStatsRes, 
         lowStockRes
       ] = await Promise.all([
-        axios.get('http://localhost:5001/api/products', { headers }),
-        axios.get('http://localhost:5001/api/categories', { headers }),
-        axios.get('http://localhost:5001/api/orders/admin/stats', { headers }),
-        axios.get('http://localhost:5001/api/products/admin/stats', { headers }),
-        axios.get('http://localhost:5001/api/products/admin/low-stock?threshold=10', { headers })
+        axios.get('/api/products', { headers }),
+        axios.get('/api/categories', { headers }),
+        axios.get('/api/orders/admin/stats', { headers }),
+        axios.get('/api/products/admin/stats', { headers }),
+        axios.get('/api/products/admin/low-stock?threshold=10', { headers })
       ])
 
       console.log('Stats fetched successfully:', {

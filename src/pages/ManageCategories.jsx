@@ -22,7 +22,7 @@ const ManageCategories = ({ user }) => {
     try {
       setLoading(true)
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:5001/api/categories', {
+      const response = await axios.get('/api/categories', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setCategories(response.data)
@@ -53,7 +53,7 @@ const ManageCategories = ({ user }) => {
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
-      const { data: created } = await axios.post('http://localhost:5001/api/categories', { name }, {
+      const { data: created } = await axios.post('/api/categories', { name }, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -92,7 +92,7 @@ const ManageCategories = ({ user }) => {
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
-      const { data: updated } = await axios.put(`http://localhost:5001/api/categories/${editingCategory._id}`, { name }, {
+      const { data: updated } = await axios.put(`/api/categories/${editingCategory._id}`, { name }, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -112,7 +112,7 @@ const ManageCategories = ({ user }) => {
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(`http://localhost:5001/api/categories/${categoryId}`, {
+      await axios.delete(`/api/categories/${categoryId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

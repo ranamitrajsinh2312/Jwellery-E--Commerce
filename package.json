@@ -8,19 +8,27 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
- 
   },
   "dependencies": {
     "@chakra-ui/react": "^3.25.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "axios": "^1.6.7",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
     "framer-motion": "^12.23.12",
     "gh-pages": "^6.3.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.541.0",
+    "mongoose": "^9.6.2",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^6.30.1"
+    "react-router-dom": "^6.30.1",
+    "stripe": "^22.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

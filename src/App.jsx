@@ -64,7 +64,7 @@ function App() {
     setCartLoading(true)
     try {
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:5001/api/cart', {
+      const response = await axios.get('/api/cart', {
         headers: { Authorization: `Bearer ${token}` }
       })
       const fetchedCart = response.data.items || []
@@ -103,7 +103,7 @@ function App() {
 
     try {
       const token = localStorage.getItem('token')
-      await axios.post('http://localhost:5001/api/cart', {
+      await axios.post('/api/cart', {
         productId,
         quantity
       }, {
@@ -124,12 +124,12 @@ function App() {
     try {
       const token = localStorage.getItem('token')
       if (quantity <= 0) {
-        await axios.delete(`http://localhost:5001/api/cart/${productId}`, {
+        await axios.delete(`/api/cart/${productId}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         toast.success('Item removed from cart')
       } else {
-        await axios.put('http://localhost:5001/api/cart', {
+        await axios.put('/api/cart', {
           productId,
           quantity
         }, {
@@ -147,7 +147,7 @@ function App() {
   const removeFromCart = useCallback(async (productId) => {
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(`http://localhost:5001/api/cart/${productId}`, {
+      await axios.delete(`/api/cart/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       await fetchCart() // Refresh cart
@@ -170,7 +170,7 @@ function App() {
       const token = localStorage.getItem('token')
       if (token) {
         // In a real app, you might want to clear the cart on the backend too
-        await axios.delete('http://localhost:5001/api/cart/clear', {
+        await axios.delete('/api/cart/clear', {
           headers: { Authorization: `Bearer ${token}` }
         })
       }

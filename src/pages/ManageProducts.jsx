@@ -22,7 +22,7 @@ const ManageProducts = ({ user }) => {
 
   const fetchProducts = async () => {
     try {
-      let url = 'http://localhost:5001/api/products'
+      let url = '/api/products'
       const params = new URLSearchParams()
       
       if (searchTerm) params.append('search', searchTerm)
@@ -44,7 +44,7 @@ const ManageProducts = ({ user }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/categories')
+      const response = await axios.get('/api/categories')
       setCategories(response.data)
     } catch (error) {
       console.error('Error fetching categories:', error)
@@ -114,7 +114,7 @@ const ManageProducts = ({ user }) => {
         images: editingProduct.images.filter(img => img.trim() !== '')
       }
 
-      await axios.put(`http://localhost:5001/api/products/${editingProduct._id}`, updateData, {
+      await axios.put(`/api/products/${editingProduct._id}`, updateData, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -133,7 +133,7 @@ const ManageProducts = ({ user }) => {
     setSubmitting(true)
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(`http://localhost:5001/api/products/${productId}`, {
+      await axios.delete(`/api/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

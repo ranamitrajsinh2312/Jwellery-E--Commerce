@@ -23,7 +23,7 @@ const Orders = ({ user }) => {
         
         // Get a fresh token by logging in again
         try {
-          const loginResponse = await axios.post('http://localhost:5001/api/users/login', {
+          const loginResponse = await axios.post('/api/users/login', {
             email: user.email,
             password: localStorage.getItem('userPassword') || ''
           })
@@ -49,7 +49,7 @@ const Orders = ({ user }) => {
         
         // Add a timestamp to prevent caching
         const timestamp = new Date().getTime()
-        const response = await axios.get(`http://localhost:5001/api/orders/my-orders?t=${timestamp}`, {
+        const response = await axios.get(`/api/orders/my-orders?t=${timestamp}`, {
           headers: {
             Authorization: `Bearer ${token}`
           },

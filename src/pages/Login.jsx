@@ -25,7 +25,7 @@ const Login = ({ login }) => {
     setLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:5001/api/users/login', formData)
+      const response = await axios.post('/api/users/login', formData)
       
       if (response.data.token) {
         // Store password temporarily for token refresh (only for testing)

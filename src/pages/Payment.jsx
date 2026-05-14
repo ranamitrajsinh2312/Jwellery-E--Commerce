@@ -140,7 +140,7 @@ const Payment = ({ clearCart }) => {
       console.log('Creating order:', orderPayload)
 
       // Create order via API
-      const orderResponse = await axios.post('http://localhost:5001/api/orders', orderPayload, {
+      const orderResponse = await axios.post('/api/orders', orderPayload, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

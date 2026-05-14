@@ -57,15 +57,21 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 
-// Start server only after database connection
-const startServer = async () => {
-  try {
-    await connectDB();
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
-};
 
-startServer();
+// Export the app for Vercel
+module.exports = app;
+
+// Start server only if this file is run directly
+if (require.main === module) {
+  const startServer = async () => {
+    try {
+      await connectDB();
+      app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    } catch (error) {
+      console.error('Failed to start server:', error);
+      process.exit(1);
+    }
+  };
+  startServer();
+}
+

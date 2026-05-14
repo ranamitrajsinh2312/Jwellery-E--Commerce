@@ -20,7 +20,7 @@ const Home = ({ addToCart, user }) => {
 
   const fetchProducts = async () => {
     try {
-      let url = "http://localhost:5001/api/products";
+      let url = "/api/products";
       const params = new URLSearchParams();
 
       if (searchTerm) params.append("search", searchTerm);
@@ -41,7 +41,7 @@ const Home = ({ addToCart, user }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/categories");
+      const response = await axios.get("/api/categories");
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);

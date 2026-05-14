@@ -20,7 +20,7 @@ const ManageUsers = ({ user }) => {
     try {
       setLoading(true)
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:5001/api/users/admin/all', {
+      const response = await axios.get('/api/users/admin/all', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setUsers(response.data)
@@ -37,7 +37,7 @@ const ManageUsers = ({ user }) => {
   const handleUpdateUser = async (userId, updates) => {
     try {
       const token = localStorage.getItem('token')
-      await axios.put(`http://localhost:5001/api/users/admin/${userId}`, updates, {
+      await axios.put(`/api/users/admin/${userId}`, updates, {
         headers: { Authorization: `Bearer ${token}` }
       })
       
@@ -53,7 +53,7 @@ const ManageUsers = ({ user }) => {
   const handleDeleteUser = async (userId) => {
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(`http://localhost:5001/api/users/admin/${userId}`, {
+      await axios.delete(`/api/users/admin/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       
