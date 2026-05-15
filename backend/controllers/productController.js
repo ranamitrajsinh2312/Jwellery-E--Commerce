@@ -54,7 +54,7 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const { search, category } = req.query;
-    let query = { isActive: true }; // Only show active products
+    let query = { isActive: { $ne: false } }; // Show all products unless explicitly deactivated
     
     if (search) {
       const searchRegex = new RegExp(search, 'i'); // Case-insensitive search
@@ -188,7 +188,7 @@ const getLowStockProducts = async (req, res) => {
     const threshold = req.query.threshold || 10;
     const lowStockProducts = await Product.find({ 
       stock: { $lte: Number(threshold) },
-      isActive: true 
+      isActive: { $ne: false }
     }).populate('category');
     
     res.json(lowStockProducts);
