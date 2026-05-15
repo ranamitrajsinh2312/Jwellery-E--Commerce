@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useToast } from '../hooks/useToast'
-import './ManageCategories.css'
 
 const ManageCategories = ({ user }) => {
   const [categories, setCategories] = useState([])

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useToast } from '../hooks/useToast'
-import './ManageUsers.css'
 
 const ManageUsers = ({ user }) => {
   const [users, setUsers] = useState([])

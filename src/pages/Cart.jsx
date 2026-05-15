@@ -1,195 +1,120 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import './Cart.css'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Cart = ({ cart, user, updateCartItem, removeFromCart, cartLoading }) => {
-  const [processingItems, setProcessingItems] = useState(new Set())
+  const navigate = useNavigate()
 
-  const handleQuantityUpdate = async (productId, newQuantity) => {
-    setProcessingItems(prev => new Set([...prev, productId]))
-    await updateCartItem(productId, newQuantity)
-    setProcessingItems(prev => {
-      const updated = new Set(prev)
-      updated.delete(productId)
-      return updated
-    })
-  }
+  const subtotal = cart.reduce((t, i) => t + i.product.price * (i.quantity || i.qty || 0), 0)
+  const tax = subtotal * 0.03
+  const shipping = subtotal >= 2000 ? 0 : 150
+  const total = subtotal + tax + shipping
 
-  const handleRemoveItem = async (productId) => {
-    setProcessingItems(prev => new Set([...prev, productId]))
-    await removeFromCart(productId)
-    setProcessingItems(prev => {
-      const updated = new Set(prev)
-      updated.delete(productId)
-      return updated
-    })
-  }
-
-  const calculateSubtotal = () => {
-    return cart.reduce((total, item) => {
-      const quantity = item.quantity || item.qty || 0
-      return total + (item.product.price * quantity)
-    }, 0)
-  }
-
-  const calculateShipping = () => {
-    const subtotal = calculateSubtotal()
-    // Free shipping over $100, otherwise $10
-    return subtotal >= 100 ? 0 : 10
-  }
-
-  const calculateTax = () => {
-    const subtotal = calculateSubtotal()
-    // 8.5% tax rate
-    return subtotal * 0.085
-  }
-
-  const calculateTotal = () => {
-    return calculateSubtotal() + calculateShipping() + calculateTax()
+  if (cartLoading) {
+    return <div className="page-loading"><div className="spinner spinner-dark" /><p>Loading cart...</p></div>
   }
 
   if (!user) {
     return (
-      <div className="cart-container">
-        <div className="cart-empty">
-          <h2>Please login to view your cart</h2>
-          <Link to="/login" className="login-link">Login</Link>
-        </div>
+      <div className="empty-cart">
+        <div className="icon">🔐</div>
+        <h2>Please sign in</h2>
+        <p>You need to be logged in to view your cart</p>
+        <Link to="/login" className="btn btn-primary">Sign In</Link>
       </div>
     )
   }
 
-  if (cartLoading && cart.length === 0) {
+  if (cart.length === 0) {
     return (
-      <div className="cart-container">
-        <div className="loading">
-          <div className="loading-spinner"></div>
-          <span>Loading your cart...</span>
+      <div className="cart-page">
+        <div className="cart-header"><h1>Shopping Cart</h1></div>
+        <div className="empty-cart">
+          <div className="icon">🛍</div>
+          <h2>Your cart is empty</h2>
+          <p>Discover our beautiful jewellery collection</p>
+          <Link to="/" className="btn btn-primary">Continue Shopping</Link>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="cart-container">
+    <div className="cart-page">
       <div className="cart-header">
-        <h1>Your Cart</h1>
-        {cart.length > 0 && (
-          <span className="cart-count">{cart.length} item{cart.length !== 1 ? 's' : ''}</span>
-        )}
+        <h1>Shopping Cart</h1>
+        <p>{cart.length} item{cart.length !== 1 ? 's' : ''} in your cart</p>
       </div>
-      
-      {cart.length === 0 ? (
-        <div className="cart-empty">
-          <div className="empty-cart-icon">🛒</div>
-          <h2>Your cart is empty</h2>
-          <p>Add some beautiful jewelry to your cart!</p>
-          <Link to="/" className="btn btn-primary">Continue Shopping</Link>
-        </div>
-      ) : (
-        <div className="cart-content">
-          <div className="cart-items">
-            {cart.map((item) => {
-              const isProcessing = processingItems.has(item.product._id)
-              const quantity = item.quantity || item.qty || 0
-              return (
-                <div key={item.product._id} className={`cart-item ${isProcessing ? 'processing' : ''}`}>
-                  <div className="item-image">
-                    {item.product.images && item.product.images[0] ? (
-                      <img src={item.product.images[0]} alt={item.product.name} />
-                    ) : (
-                      <div className="placeholder-image">💎</div>
-                    )}
-                  </div>
-                  
-                  <div className="item-details">
-                    <Link to={`/product/${item.product._id}`} className="item-name">
-                      <h3>{item.product.name}</h3>
-                    </Link>
-                    <p className="item-price">${item.product.price}</p>
-                    
-                    <div className="quantity-controls">
-                      <button 
-                        onClick={() => handleQuantityUpdate(item.product._id, Math.max(0, quantity - 1))}
-                        className="quantity-btn btn-secondary btn-sm"
-                        disabled={isProcessing || quantity <= 1}
-                      >
-                        {isProcessing ? '...' : '−'}
-                      </button>
-                      <span className="quantity">{quantity}</span>
-                      <button 
-                        onClick={() => handleQuantityUpdate(item.product._id, quantity + 1)}
-                        className="quantity-btn btn-secondary btn-sm"
-                        disabled={isProcessing}
-                      >
-                        {isProcessing ? '...' : '+'}
-                      </button>
-                    </div>
-                    
-                    <button 
-                      onClick={() => handleRemoveItem(item.product._id)}
-                      className="remove-btn btn btn-error btn-sm"
-                      disabled={isProcessing}
-                    >
-                      {isProcessing ? 'Removing...' : 'Remove'}
-                    </button>
-                  </div>
-                  
-                  <div className="item-total">
-                    <p className="total-price">${(item.product.price * quantity).toFixed(2)}</p>
-                  </div>
-                </div>
-              )
-            })}
+
+      <div className="cart-layout">
+        {/* Items */}
+        <div className="cart-items-list">
+          <div className="cart-items-header">
+            <span>Product</span>
+            <span>Price</span>
+            <span>Quantity</span>
+            <span>Subtotal</span>
+            <span></span>
           </div>
-          
-          <div className="cart-summary">
-            <h3>Order Summary</h3>
-            
-            <div className="summary-details">
-              <div className="summary-item">
-                <span>Subtotal ({cart.length} item{cart.length !== 1 ? 's' : ''}):</span>
-                <span>${calculateSubtotal().toFixed(2)}</span>
-              </div>
-              
-              <div className="summary-item">
-                <span>Shipping:</span>
-                <span className={calculateShipping() === 0 ? 'free-shipping' : ''}>
-                  {calculateShipping() === 0 ? 'FREE' : `$${calculateShipping().toFixed(2)}`}
-                </span>
-              </div>
-              
-              {calculateShipping() > 0 && calculateSubtotal() < 100 && (
-                <div className="shipping-note">
-                  <small>💡 Add ${(100 - calculateSubtotal()).toFixed(2)} more for FREE shipping!</small>
+          {cart.map(item => {
+            const qty = item.quantity || item.qty || 0
+            const itemTotal = item.product.price * qty
+            return (
+              <div key={item.product._id} className="cart-item">
+                <div className="cart-item-product">
+                  <div className="cart-item-img">
+                    {item.product.images?.[0]
+                      ? <img src={item.product.images[0]} alt={item.product.name} />
+                      : <div className="cart-item-img-placeholder">💍</div>}
+                  </div>
+                  <div>
+                    <Link to={`/product/${item.product._id}`} className="cart-item-name">{item.product.name}</Link>
+                    {item.product.category?.name && <div className="cart-item-cat">{item.product.category.name}</div>}
+                  </div>
                 </div>
-              )}
-              
-              <div className="summary-item">
-                <span>Tax (8.5%):</span>
-                <span>${calculateTax().toFixed(2)}</span>
-              </div>
-            </div>
-            
-            <div className="summary-total">
-              <span>Total:</span>
-              <span>${calculateTotal().toFixed(2)}</span>
-            </div>
-            
-            <div className="savings-info">
-              {calculateShipping() === 0 && (
-                <div className="savings-badge">
-                  🎉 You saved $10 on shipping!
+                <div className="cart-item-price">₹{item.product.price?.toLocaleString('en-IN')}</div>
+                <div className="cart-qty-ctrl">
+                  <button className="qty-btn" onClick={() => updateCartItem(item.product._id, qty - 1)}>−</button>
+                  <span className="qty-value">{qty}</span>
+                  <button className="qty-btn" onClick={() => updateCartItem(item.product._id, qty + 1)}>+</button>
                 </div>
-              )}
-            </div>
-            
-            <Link to="/checkout" className="checkout-btn">
-              Proceed to Checkout
-            </Link>
+                <div className="cart-item-subtotal">₹{itemTotal.toLocaleString('en-IN')}</div>
+                <button className="cart-remove" onClick={() => removeFromCart(item.product._id)} aria-label="Remove">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="3 6 5 6 21 6"/><path d="m19 6-.867 12.142A2 2 0 0116.138 20H7.862a2 2 0 01-1.995-1.858L5 6m5 0V4h4v2"/>
+                  </svg>
+                </button>
+              </div>
+            )
+          })}
+          <div className="cart-footer-bar">
+            <Link to="/">← Continue Shopping</Link>
           </div>
         </div>
-      )}
+
+        {/* Summary */}
+        <div className="cart-summary-card">
+          <h3>Order Summary</h3>
+          <div className="summary-rows">
+            <div className="sum-row"><span>Subtotal</span><span>₹{subtotal.toLocaleString('en-IN')}</span></div>
+            <div className="sum-row"><span>GST (3%)</span><span>₹{tax.toFixed(0)}</span></div>
+            <div className="sum-row">
+              <span>Shipping</span>
+              <span style={{ color: shipping === 0 ? 'var(--success)' : undefined }}>
+                {shipping === 0 ? 'FREE' : `₹${shipping}`}
+              </span>
+            </div>
+            {shipping > 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Free shipping on orders above ₹2,000</div>}
+            <div className="sum-row total"><span>Total</span><span>₹{total.toFixed(0)}</span></div>
+          </div>
+          <div className="cart-cta">
+            <Link to="/checkout" className="btn btn-primary btn-full btn-lg">Proceed to Checkout</Link>
+          </div>
+          <div className="trust-badges">
+            <span className="trust-badge">🔒 Secure</span>
+            <span className="trust-badge">↩ Easy Returns</span>
+            <span className="trust-badge">🚚 Fast Delivery</span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

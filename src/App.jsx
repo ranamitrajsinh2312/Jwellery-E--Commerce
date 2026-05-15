@@ -21,7 +21,7 @@ import Payment from './pages/Payment'
 import OrderSuccess from './pages/OrderSuccess'
 import Orders from './pages/Orders'
 import { useToast } from './hooks/useToast'
-import './App.css'
+// Styles are loaded globally via globals.css in main.jsx
 
 function App() {
   const [user, setUser] = useState(null)

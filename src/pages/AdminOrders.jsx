@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import './AdminOrders.css'
 
 const AdminOrders = ({ user }) => {
   const [orders, setOrders] = useState([])

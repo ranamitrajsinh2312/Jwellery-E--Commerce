@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useToast } from '../hooks/useToast'
-import './ManageProducts.css'
 
 const ManageProducts = ({ user }) => {
   const [products, setProducts] = useState([])

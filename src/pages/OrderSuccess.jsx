@@ -1,5 +1,4 @@
 import { useLocation, Link } from 'react-router-dom'
-import './OrderSuccess.css'
 
 const OrderSuccess = () => {
   const location = useLocation()

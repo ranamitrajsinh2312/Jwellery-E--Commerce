@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./Home.css";
 
 const HeroCarousel = () => {
   const slides = [

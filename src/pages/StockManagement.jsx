@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import './StockManagement.css'
 
 const StockManagement = ({ user }) => {
   const [products, setProducts] = useState([])

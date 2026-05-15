@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useToast } from '../hooks/useToast'
-import './AddProduct.css'
 
 const AddProduct = ({ user }) => {
   const [formData, setFormData] = useState({

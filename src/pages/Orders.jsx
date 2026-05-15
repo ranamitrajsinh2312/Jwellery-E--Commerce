@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import './Orders.css'
 
 const Orders = ({ user }) => {
   const [orders, setOrders] = useState([])
