@@ -26,22 +26,12 @@ body {
   flex-direction: column;
 }
 
-.container {
-  flex: 1;
-  padding: 2rem 0;
-}
-
-.loading {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-}
+/* .container and .loading are defined in globals.css */
 
 .error {
   text-align: center;
   padding: 3rem;
-  color: var(--error-color);
+  color: var(--error);
   font-size: 1.2rem;
 }
 
@@ -57,9 +47,4 @@ a {
   color: inherit;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem 0;
-  }
-}
+/* Responsive overrides live in globals.css */
